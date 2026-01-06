@@ -4,15 +4,19 @@ const Header = ({ text }) => <h1>{text}</h1>
 
 const Button = ({ handleClick, text }) => <button onClick={handleClick}>{text}</button>
 
-const Statistics = ({ good, neutral, bad }) => <div><p>good: {good}</p><p> neutral: {neutral}</p><p> bad: {bad}</p></div>
+const Statistics = ({ good, neutral, bad, total }) => <div><p>good: {good}</p><p> neutral: {neutral}</p><p> bad: {bad}</p><p> all: {total}</p><p> average: {(good + (-bad)) / total}</p> <p> positive: {good / total}%</p></div>
 
 const App = () => {
   // save clicks of each button to its own state
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
+  const [total, setTotal] = useState(0)
 
   const handleFeedback = (type) => {
+    const updatedTotal = total + 1
+    setTotal(updatedTotal)
+
     if (type === 'good') {
       const updatedGood = good + 1
       setGood(updatedGood)
@@ -33,7 +37,7 @@ const App = () => {
       <Button handleClick={() => handleFeedback('bad')} text="bad" />
 
       <Header text="statistics" />
-      <Statistics good={good} neutral={neutral} bad={bad} />
+      <Statistics good={good} neutral={neutral} bad={bad} total={total} />
     </>
   )
 }
